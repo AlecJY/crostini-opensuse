@@ -220,6 +220,14 @@ packages:
   manager: zypper
   update: true
   cleanup: true
+  repositories:
+  - name: home:AlecJY:crostini
+    url: https://download.opensuse.org/repositories/home:/AlecJY:/crostini/${releasever}/
+    key: https://download.opensuse.org/repositories/home:/AlecJY:/crostini/${releasever}/repodata/repomd.xml.key
+    types:
+    - container
+    variants:
+    - crostini
   sets:
   - packages:
     - apparmor-abstractions
@@ -310,6 +318,26 @@ packages:
     variants:
     - desktop-kde
 
+  - packages:
+    - NetworkManager
+    - NetworkManager-tui
+    - cros-guest-tools
+    - cros-logging
+    - cros-sommelier-config
+    - cros-sudo-config
+    - cros-systemd-overrides
+    - cros-vmstat-metrics
+    - cros-wayland
+    - cros-pulse-config
+    - cros-xdg-desktop-portal
+    - grpconv
+    - libcap-progs
+    action: install
+    types:
+    - container
+    variants:
+    - crostini
+
 actions:
 - trigger: post-unpack
   action: |-
@@ -385,6 +413,28 @@ actions:
     umount -l /etc/resolv.conf || true
     rm /etc/resolv.conf
     ln -sf /var/run/netconfig/resolv.conf /etc/resolv.conf
+
+- trigger: post-packages
+  action: |-
+    #!/bin/sh
+    # Switch from wicked to NetworkManager because wicked is slow
+    # in Crostini
+    systemctl disable wicked.service
+    systemctl enable NetworkManager.service
+
+    # Set the capability flag for ping
+    setcap cap_net_raw+ep /usr/bin/ping
+
+    # Overwrite pulseaudio configurations
+    cp -rT /etc/skel/.config/pulse /etc/pulse
+
+    # Crostini Tremplin requires /etc/gshadow to create a user, so
+    # use "grpconv" to create one for compatabiliy reason.
+    grpconv
+  types:
+  - container
+  variants:
+  - crostini
 
 - trigger: post-files
   action: |-
