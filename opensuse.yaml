@@ -332,7 +332,6 @@ packages:
 
   - packages:
     - NetworkManager
-    - NetworkManager-tui
     - cros-guest-tools
     - cros-logging
     - cros-sommelier-config
@@ -347,6 +346,17 @@ packages:
     action: install
     types:
     - container
+    variants:
+    - crostini
+
+  - packages:
+    - NetworkManager-tui
+    action: install
+    types:
+    - container
+    releases:
+    - 15.5
+    - tumbleweed
     variants:
     - crostini
 
