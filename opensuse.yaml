@@ -226,6 +226,18 @@ packages:
     key: https://download.opensuse.org/repositories/home:/AlecJY:/crostini/${releasever}/repodata/repomd.xml.key
     types:
     - container
+    releases:
+    - 15.4
+    - 15.5
+    variants:
+    - crostini
+  - name: home:AlecJY:crostini
+    url: https://download.opensuse.org/repositories/home:/AlecJY:/crostini/openSUSE_Tumbleweed/
+    key: https://download.opensuse.org/repositories/home:/AlecJY:/crostini/openSUSE_Tumbleweed/repodata/repomd.xml.key
+    types:
+    - container
+    releases:
+    - tumbleweed
     variants:
     - crostini
   sets:
