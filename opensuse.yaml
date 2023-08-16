@@ -333,6 +333,7 @@ packages:
   - packages:
     - NetworkManager
     - cros-guest-tools
+    - cros-im
     - cros-logging
     - cros-sommelier-config
     - cros-sudo-config
